@@ -4,6 +4,7 @@
 #include <string.h> //字符串操作
 #include <conio.h> //系统输入输出   
 #include <time.h> 
+#define TURE 1
 typedef struct worker{
 
 	char workerID[10];//职工工号
@@ -18,7 +19,6 @@ typedef struct worker{
 }zggz;
 void grsds(zggz a[],int i)				//计算个人所得税
 {
-
 	if(a[i].sumsalary>=100000)
 	{
 		a[i].personaltax=(a[i].sumsalary-100000)*(float)0.45+29850;	//20000*1.3+15000*0.2+3000*0.15+1500*0.1+500*0.5
@@ -60,23 +60,42 @@ int read(zggz a[],int n)   //读取职工工资数据函数
 {
 	FILE *fp;
 	int i;
-	if((fp=fopen("gx.txt","wb"))==NULL)
+	if((fp=fopen("gz.txt","rb"))==NULL)//以二进制方式打开职工工资数据文件并进行判断是否失败
 	{
-		printf("cannot open file!\n");
+		printf("\n\n\t职工工资数据文件无法打开，或为空！\n");
+		printf("\n\t\t按任意键返回主菜单！\n");
+		getchar();
 		return 0;
 	}
-	for(i=0;i<n;i++)
-		if(fwrite(&a[i],sizeof(struct worker),1,fp)!=1)
-			printf("file write error!\n");
-		fclose(fp);
-		return 0;
+	else  //文件打开成功时
+	{
+		for(i=0;i<n;i++)
+			if(fread(&a[i],sizeof(struct worker),1,fp)==1)
+				printf("file write error!\n");
+			fclose(fp);
+			printf("\n\t5秒钟后继续！\n",i);
+			i--;
+			Sleep(5000);//延时5秒钟
+			return 0;
+	}
 }
 int write(zggz a[],int k)   //保存职员信息
 {
+	FILE *fp;
 	int j,x;
 	char gonghao[10];
 	j=x=0;
-	while(1)
+	if(x==-1)
+	{
+		printf("\n\t\t按任意键返回主菜单！");
+		getchar();
+		return 0;
+	}
+	
+	if((fp=fopen("gz.dat","wb"))!=NULL)
+	{
+		fwrite(&a[j],sizeof(struct worker),j+1,fp);
+		while(1)
 	{
 		printf("请输入职工的工号：");
 		scanf("%s",gonghao);
@@ -106,18 +125,31 @@ int write(zggz a[],int k)   //保存职员信息
 		a[k].sumsalary=a[k].gsalary+a[k].xsalary+a[k].zsalary+a[k].jsalary;
 		k++;
 	}
+		fclose(fp);
+	    printf("\n\n\t\t%d条职工记录保存完毕！\n",j+1);
+	}
+	else
+	{
+		printf("\t\t无法打开职工工资数据文件！\n");
+		printf("\n\t\t按任意键返回主菜单！");
+		getchar();
+	}
+
+	
 	return k;
 }
 int find(zggz a[],int y)  //查询职工工资数据函数
 {
 	int i;
 	int x=0;
-	char str[15];
+	char gonghao[15];
 	printf("请输入你要查找的工号或姓名：");
-	scanf("%s",str);
+	scanf("%s",gonghao);
 	for(i=0;i<y;i++)
-		if(!strcmp(str,a[i].workerID)||!strcmp(str,a[i].name))
+		if(!strcmp(gonghao,a[i].workerID)||!strcmp(gonghao,a[i].name))
 		{
+			printf("\n该职工工资情况如下：");
+			printf("\n=============================\n\n");
 			printf("员工工号为%s",a[i].workerID);
 			printf("员工姓名为%s",a[i].name);
 			printf("岗位工资：%f",a[i].gsalary);
@@ -134,15 +166,19 @@ int find(zggz a[],int y)  //查询职工工资数据函数
 			printf("\n未找到该记录！");
 			return -1;
 		}
+		printf("\n\t\t按任意键返回主菜单！");
+		getchar();
 		return 0;
 }
-void list(zggz a[],int n)   //浏览职工工资数据函数
+int list(zggz a[],int n)   //浏览职工工资数据函数
 {
 	int i=0;
+	printf("\n\n\t\t\t全体职工工资情况如下：\n");
+	printf("\t\t\t=============================\n\n");
 	if(n==0)
 	{
 		printf("Files are empty");
-		return;
+		return 0;
 	}
 	do
 	{
@@ -157,16 +193,19 @@ void list(zggz a[],int n)   //浏览职工工资数据函数
 		printf("实发工资：%f",a[i].realsalary);
 		i++;
 	}while(i<n);
+	Sleep(5000);
+	printf("\n\t\t按任意键返回主菜单！");
+	getchar();
 }
 void modify(zggz a[],int y) //修改职工工资数据函数
 {
 	int i;
 	int x=0;
-	char str[15];
+	char gonghao[15];
 	printf("请输入你要修改的工号：");
-	scanf("%s",str);
+	scanf("%s",gonghao);
 	for(i=0;i<y;i++)
-		if(!strcmp(str,a[i].workerID)||!strcmp(str,a[i].name))
+		if(!strcmp(gonghao,a[i].workerID)||!strcmp(gonghao,a[i].name))
 		{
 			printf("请输入修改后职工的姓名：");
 			scanf("%s",a[i].name);
@@ -189,17 +228,19 @@ void modify(zggz a[],int y) //修改职工工资数据函数
 		{
 			printf("未找到要修改的工号");
 		}
+		printf("\n\t\t按任意键返回主菜单！");
+	    getchar();
 }
 int del(zggz a[],int y)  //删除职工工资数据函数
 {
 	int i=0;
 	int x=0;
-	char str[15];
+	char gonghao[15];
 	printf("请输入你要删除的编号或姓名：");
-	scanf("%s",str);
+	scanf("%s",gonghao);
 	printf("\n删除成功！");
 	for(i=0;i<y;i++)
-		if(!strcmp(str,a[i].workerID)||!strcmp(str,a[i].name))
+		if(!strcmp(gonghao,a[i].workerID)||!strcmp(gonghao,a[i].name))
 		{
 			while(i<y)
 			{
@@ -227,9 +268,10 @@ int add(zggz a[],int y)  //添加职工工资数据函数
 	int i;
 	int x=0;
 	char gonghao[15];
-	printf("请输入你要插入的工号：");
+	printf("\t请输入你要插入的工号：");
 	scanf("%s",gonghao);
-	printf("请输入一条新的记录信息：");
+	fflush(stdin);
+	printf("\t请输入一条新的记录信息：");
 	for(i=0;i<y;i++)
 		if(strcmp(gonghao,a[i].workerID)==0)
 		{
@@ -270,10 +312,26 @@ int add(zggz a[],int y)  //添加职工工资数据函数
 
 int main()
 {
-	int selete,c=0;
+	char ch;
+	while(TURE)
+	{
+	system("cls");//清屏命令
+	printf("\n\n\t\t--欢迎使用工资管理系统--\n\n\n");
+	printf("\t\t=================================================\n");
+	printf("\t\t\t1.读取职员工资记录\n");
+	printf("\t\t\t2.查询职员工资记录\n");
+	printf("\t\t\t3.修改职员工资记录\n");
+	printf("\t\t\t4.添加职员工资记录\n");
+	printf("\t\t\t5.删除职员工资记录\n");
+	printf("\t\t\t6.保存职员工资记录\n");
+	printf("\t\t\t7.浏览职员记录\n");
+	printf("\t\t\t8.退出\n");
+	printf("\t\t=================================================\n");
+	printf("\n\t\t你的选择是：");
+	ch=getchar();
+	int c=0;
 	int i=0;
 	int z=0;
-	char q,p,x,s;
 	zggz b[100];
 	FILE *fp;
 	if((fp=fopen("gx.dat","rb"))==NULL)
@@ -288,67 +346,19 @@ int main()
 		fclose(fp);
 		c=i-1;
 	}
-	read(b,c);
-	while(1)
+	switch(ch)
 	{
-		scanf("%d",&selete);
-		if(selete==0)
-		{
-			printf("Thank you for your use ( ^_^ ) Bye");
-			break;
-		}
-		switch(selete)
-		{
-		case 1:write(b,c);break;
-		case 2:
-			{
-				list(b,c);
-				do
-				{
-					c=del(b,c);
-					printf("是否继续删除，是按y，否则请按任意值\n");
-					getchar();
-					scanf("%c",&p);
-				}while(p=='Y'||p=='y');
-				break;
-			}
-		case 3:
-			{
-				do
-				{
-					find(b,c);
-					printf("是否继续查找，是按y，否则请按任意值\n");
-					getchar();
-					scanf("%c",&x);
-				}while(x=='Y'||x=='y');
-				break;
-			}
-		case 4:
-			{
-				list(b,c);
-				do
-				{
-					modify(b,c);
-					printf("是否继续修改，是按y，否则请按任意值\n");
-					getchar();
-					scanf("%c",&q);
-				}while(q=='Y'||q=='y');
-				break;
-			}
-		case 5:
-			{
-				do
-				{
-					c=add(b,c);
-					printf("是否继续插入，是按y，否则请按任意值\n");
-					getchar();
-					scanf("%c",&s);
-				}while(s=='Y'||s=='y');
-				break;
-			}
-		case 6:list(b,c);break;
-		default:printf("Please try again!");
-		}
+	case'1':read(b,c);break;//读取
+	case'2':find(b,c);break;//查询
+	case'3':modify(b,c);break;//修改
+	case'4':add(b,c);break;//添加
+	case'5':del(b,c);break;//删除
+	case'6':write(b,c);break;//保存
+	case'7':list(b,c);break;//浏览
+	case'8':return 0;//退出
+	default:printf("\t\t请按任意键返回重新选择（1-7）\n");
+	getch();
+	}
 	}
 	return 0;
 }
