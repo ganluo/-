@@ -24,7 +24,29 @@ struct worker          //声明职工工资数据结构体
 	float realsalary;      //实发工资
 };
 struct worker zggz[100];      //声明记录职工工资情况的100个元素的结构体数组
-int n=-1;                    //声明统计职工人数变量（全局）
+int n=-1;  
+void read()  //读取职工工资数据函数
+{
+	FILE *fp;
+	if((fp=fopen("gz.dat","rb"))==NULL)     //以二进制方式打开职工工资数据文件并进行判断是否失败
+	{
+		printf("\n\n\t职工工资数据文件无法打开，或为空！");
+		printf("\n\n\t按任意键进入菜单！");
+		getch();
+		return;
+	}
+	else    //文件打开成功时
+	{
+		n++;    //计算结构体数组下标
+		while(fread(&zggz[n],sizeof(zggz[n]),1,fp)==1)
+			n++;
+		fclose(fp);    //关闭文件指针
+		printf("\n\n\t职工工资数据读取完毕，共有%d人！\n",n);
+		printf("\n\t5秒钟后继续！\n",n);    
+		n--;        //计算职工记录总数
+		Sleep(5000);//延时5秒钟
+	}
+}                  //声明统计职工人数变量（全局）
 void write()                //保存职员信息
 {
 	FILE *fp;    //声明文件指针
@@ -287,26 +309,4 @@ void main()
 		}
 	}
 	return;
-}
-void read()  //读取职工工资数据函数
-{
-	FILE *fp;
-	if((fp=fopen("gz.dat","rb"))==NULL)     //以二进制方式打开职工工资数据文件并进行判断是否失败
-	{
-		printf("\n\n\t职工工资数据文件无法打开，或为空！");
-		printf("\n\n\t按任意键进入菜单！");
-		getch();
-		return;
-	}
-	else    //文件打开成功时
-	{
-		n++;    //计算结构体数组下标
-		while(fread(&zggz[n],sizeof(zggz[n]),1,fp)==1)
-			n++;
-		fclose(fp);    //关闭文件指针
-		printf("\n\n\t职工工资数据读取完毕，共有%d人！\n",n);
-		printf("\n\t5秒钟后继续！\n",n);    
-		n--;        //计算职工记录总数
-		Sleep(5000);//延时5秒钟
-	}
 }
