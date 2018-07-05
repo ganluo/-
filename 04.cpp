@@ -1,5 +1,5 @@
 #include "stdio.h"       //标准输入输出
-#include "windows.h"    //Sleep()包含在此
+#include "windows.h"    //Sleep()包含在此，清屏命令
 #include "string.h"    //字符串操作
 #include "conio.h"    //系统输入输出 getch()及getche()函数包含在此  
 #define TURE 1
@@ -25,7 +25,7 @@ struct worker          //声明职工工资数据结构体
 };
 struct worker zggz[100];      //声明记录职工工资情况的100个元素的结构体数组
 int n=-1;  
-void read()  //读取职工工资数据函数
+void read()                   //读取职工工资数据函数
 {
 	FILE *fp;
 	if((fp=fopen("gz.dat","rb"))==NULL)     //以二进制方式打开职工工资数据文件并进行判断是否失败
@@ -35,53 +35,53 @@ void read()  //读取职工工资数据函数
 		getch();
 		return;
 	}
-	else    //文件打开成功时
+	else                                                   //文件打开成功时
 	{
-		n++;    //计算结构体数组下标
+		n++;                                              //计算结构体数组下标
 		while(fread(&zggz[n],sizeof(zggz[n]),1,fp)==1)
 			n++;
-		fclose(fp);    //关闭文件指针
+		fclose(fp);                                       //关闭文件指针
 		printf("\n\n\t职工工资数据读取完毕，共有%d人！\n",n);
 		printf("\n\t3秒钟后继续！\n",n);    
-		n--;        //计算职工记录总数
-		Sleep(3000);//延时5秒钟
+		n--;                                                //计算职工记录总数
+		Sleep(3000);                                        //延时3秒钟
 	}
-}                  //声明统计职工人数变量（全局）
-void write()                //保存职员信息
+}                                                                 //声明统计职工人数变量（全局）
+void write()                                                     //保存职员信息
 {
-	FILE *fp;    //声明文件指针
-	if(n==-1)   //职工人数为0时
+	FILE *fp;                                                   //声明文件指针
+	if(n==-1)                                                  //职工人数为0时
 	{
 		printf("没有数据可存！按任意键返回主菜单。\n");
-		getch();                      //不回显函数，当用户按下某个字符时，函数自动读取，无需按回车（字符不会显示在屏幕上）
+		getch();                                           //不回显函数，当用户按下某个字符时，函数自动读取，无需按回车（字符不会显示在屏幕上）
 		return;
 	}
-	if((fp=fopen("gz.dat","wb"))!=NULL)            //以二进制方式打开职工工资数据文件并进行判断是否失败
+	if((fp=fopen("gz.dat","wb"))!=NULL)                     //以二进制方式打开职工工资数据文件并进行判断是否失败
 	{
-		fwrite(&zggz[0],sizeof(zggz[0]),n+1,fp);   //所有记录一次写入文件
-		fclose(fp);                               //关闭文件指针
+		fwrite(&zggz[0],sizeof(zggz[0]),n+1,fp);             //所有记录一次写入文件
+		fclose(fp);                                         //关闭文件指针
 		printf("\n\n\t%d条职工记录保存完毕！\n",n+1);
 	}  
-	else                                      //文件打开不成功时
+	else                                                   //文件打开不成功时
 		printf("\t\t无法打开职工工资数据文件！\n");
 	printf("\n\t\t按任意键返回主菜单。");
-	getch();               //不回显函数
+	getch();                                          //不回显函数
 }
-void find()               //查询职工工资数据函数
+void find()                                           //查询职工工资数据函数
 {
-	char gonghao[10];    //接收职工工号字符数组
-	int i;              //循环变量
-	if(n==-1)          //人数为0说明工资记录尚未添加
+	char gonghao[10];                                  //接收职工工号字符数组
+	int i;                                            //循环变量
+	if(n==-1)                                        //人数为0说明工资记录尚未添加
 	{
 		printf("\n\n\t\t当前还没有职工工资记录，按任意键返回主菜单。");
-		getch();                 //不回显函数
+		getch();                                                              //不回显函数
 		return;
 	}
-	printf("\t请输入职工工号：");   //提示信息
-	gets(gonghao);                 //从键盘读取数组
-	for(i=0;i<=n;i++)             //在职工总数范围内循环查找
+	printf("\t请输入职工工号：");                                             //提示信息
+	gets(gonghao);                                                           //从键盘读取数组
+	for(i=0;i<=n;i++)                                                       //在职工总数范围内循环查找
 	{
-		if(strcmp(zggz[i].workerID,gonghao)==0)   //比较并找到
+		if(strcmp(zggz[i].workerID,gonghao)==0)                           //比较并找到
 		{
 			printf("\n该职工工资情况如下：");
 			printf("\n===================================\n\n");
@@ -92,7 +92,7 @@ void find()               //查询职工工资数据函数
 			printf("%9.2f%9.2f",zggz[i].jsalary,zggz[i].sumsalary);
 			printf("%9.2f%9.2f\n",zggz[i].personaltax,zggz[i].realsalary);
 			printf("\n\t\t按任意键返回主菜单。");
-			getch();     //不回显函数
+			getch();                                                                //不回显函数
 			break;
 		}
 	}
@@ -104,10 +104,10 @@ void find()               //查询职工工资数据函数
 		return;
 	}
 }
-void list()    //浏览职工工资数据函数
+void list()                                                                  //浏览职工工资数据函数
 {
 	int i;
-	system("cls");      //清屏
+	system("cls");                                                          //清屏命令
 	printf("\n\n\t\t\t全体职工工资情况如下：\n");
 	printf("\n===================================\n\n");
 	printf("%-6s%-6s%-9s%-9s%-9s","工号","姓名","岗位工资","薪级工资","职务津贴");
@@ -123,19 +123,19 @@ void list()    //浏览职工工资数据函数
 	getch();
 	return;
 }
-void modify()             //修改职工工资数据函数
+void modify()                                                        //修改职工工资数据函数
 {
-	char gonghao[10];    //接收职工工号字符数组
-	int i;              //循环变量
-	if(n==-1)          //人数为0说明工资记录尚未添加
+	char gonghao[10];                                              //接收职工工号字符数组
+	int i;                                                        //循环变量
+	if(n==-1)                                                    //人数为0说明工资记录尚未添加
 	{
 		printf("\n\n\t\t当前还没有职工工资记录，按任意键返回主菜单。");
 		getch();
 		return;
 	}
-	printf("\t请输入工号：");//提示信息
-	gets(gonghao);          //从键盘读取字符串
-	for(i=0;i<=n;i++)      //在职工总数范围内循环查找
+	printf("\t请输入工号：");                                        //提示信息
+	gets(gonghao);                                                  //从键盘读取字符串
+	for(i=0;i<=n;i++)                                              //在职工总数范围内循环查找
 	{
 		if(strcmp(zggz[i].workerID,gonghao)==0)
 		{
@@ -156,25 +156,25 @@ void modify()             //修改职工工资数据函数
 			printf("\n\t\t请输入该职工新的绩效工资：");
 			scanf("%f",&zggz[i].jsalary);
 			zggz[i].sumsalary=zggz[i].gsalary+zggz[i].xsalary+zggz[i].zsalary+zggz[i].jsalary;  //计算应发工资
-			zggz[i].personaltax=grsds(zggz[i].sumsalary);              //计算个人所得税
-			zggz[i].realsalary=zggz[i].sumsalary-zggz[i].personaltax; //计算实发工资
+			zggz[i].personaltax=grsds(zggz[i].sumsalary);                                      //计算个人所得税
+			zggz[i].realsalary=zggz[i].sumsalary-zggz[i].personaltax;                         //计算实发工资
 			printf("\n\t\t该职工的应发工资是：%f",zggz[i].sumsalary);
 			printf("\n\t\t该职工的个人所得税是：%f",zggz[i].personaltax);
 			printf("\n\t\t该职工的实发工资是：%f",zggz[i].realsalary);
 			printf("\n\n\t\t该职工工资数据修改成功！按任意键返回主菜单。");
-			getch();    //不回显函数
+			getch();                                                                     //不回显函数
 			return;
 		}
 	}
 	printf("\n\t\t您所输入的职工工号有误或不存在！");
 	printf("按任意键返回主菜单。");
-	getch();     //不回显函数
+	getch();                                             //不回显函数
 	return;
 }
-void add()   //添加职工工资数据函数
+void add()                                             //添加职工工资数据函数
 {
 	printf("\t请输入工号：");
-	fflush(stdin);    //请出键盘缓冲区
+	fflush(stdin);                                  //请出键盘缓冲区
 	gets(zggz[++n].workerID);
 	printf("\t\t\t请输入新职工姓名：");
 	gets(zggz[n].name);
@@ -187,34 +187,34 @@ void add()   //添加职工工资数据函数
 	printf("\n\t\t请输入该职工新的绩效工资：");
 	scanf("%f",&zggz[n].jsalary);
 	zggz[n].sumsalary=zggz[n].gsalary+zggz[n].xsalary+zggz[n].zsalary+zggz[n].jsalary;
-	zggz[n].personaltax=grsds(zggz[n].sumsalary);   //计算个人所得税
+	zggz[n].personaltax=grsds(zggz[n].sumsalary);                                         //计算个人所得税
 	zggz[n].realsalary=zggz[n].sumsalary-zggz[n].personaltax;
-	printf("\t\tt该职工的应发工资是：%f",zggz[n].realsalary);
-	printf("\t\tt该职工的个人所得税是：%f",zggz[n].personaltax);
+	printf("\t\t\t该职工的应发工资是：%f",zggz[n].realsalary);
+	printf("\t\t\t该职工的个人所得税是：%f",zggz[n].personaltax);
 	printf("\t\t\t该职工的实发工资是：%f",zggz[n].realsalary);
 	printf("\n\n\t\t\t按任意键返回。");
-	getchar();
+	getch();
 }
-void del()  //删除职工工资数据函数
+void del()                          //删除职工工资数据函数
 {
-	char gonghao[10];   //接收职工工号字符数组
-	int i,j;   //循环变量
-	char d;    //接收确认删除字符y/n
+	char gonghao[10];              //接收职工工号字符数组
+	int i,j;                      //循环变量
+	char d;                      //接收确认删除字符y/n
 	printf("\t请输入待删除职工工号：");
 	gets(gonghao);
-	for(i=0;i<=n;i++)  //在职工总数范围内循环查找
+	for(i=0;i<=n;i++)                              //在职工总数范围内循环查找
 	{
 		if(strcmp(zggz[i].workerID,gonghao)==0)   //比较并找到
 		{
 			printf("\n\t\t你确认要删除%s号职工工资信息吗（y/n）？",zggz[i].workerID);
 			d=getche();
-			if(d=='y'||d=='Y')  //确认删除
+			if(d=='y'||d=='Y')                                      //确认删除
 			{
-				if(i==n)  //如果是最后一条记录
+				if(i==n)                                          //如果是最后一条记录
 					n--;
-				else    //不是最后一条记录时
+				else                                            //不是最后一条记录时
 				{
-					for(j=i;j<=n;j++)  //从该记录后续记录更新前一条记录
+					for(j=i;j<=n;j++)                          //从该记录后续记录更新前一条记录
 					{
 						strcpy(zggz[j].workerID,zggz[j+1].workerID);
 						strcpy(zggz[j].name,zggz[j+1].name);
@@ -246,10 +246,10 @@ void del()  //删除职工工资数据函数
 		getch();
 	}
 }
-float grsds(float m)   //计算个人所得税
+float grsds(float m)           //计算个人所得税
 {
-	float x;     //当月应纳税所得额
-	float y=0;  //当月应纳税额
+	float x;                 //当月应纳税所得额
+	float y=0;              //当月应纳税额
 	int n;
 	x=m-2000;
 	if(x>0)
