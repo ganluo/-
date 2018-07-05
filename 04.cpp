@@ -176,24 +176,38 @@ void add()                                             //添加职工工资数据函数
 	printf("\t请输入工号：");
 	fflush(stdin);                                  //请出键盘缓冲区
 	gets(zggz[++n].workerID);
-	printf("\t\t\t请输入新职工姓名：");
-	gets(zggz[n].name);
-	printf("\n\t\t请输入该职工新的岗位工资：");
-	scanf("%f",&zggz[n].gsalary);
-	printf("\n\t\t请输入该职工新的薪级工资：");
-	scanf("%f",&zggz[n].xsalary);
-	printf("\n\t\t请输入该职工新的职务津贴：");
-	scanf("%f",&zggz[n].zsalary);
-	printf("\n\t\t请输入该职工新的绩效工资：");
-	scanf("%f",&zggz[n].jsalary);
-	zggz[n].sumsalary=zggz[n].gsalary+zggz[n].xsalary+zggz[n].zsalary+zggz[n].jsalary;
-	zggz[n].personaltax=grsds(zggz[n].sumsalary);                                         //计算个人所得税
-	zggz[n].realsalary=zggz[n].sumsalary-zggz[n].personaltax;
-	printf("\t\t\t该职工的应发工资是：%f",zggz[n].realsalary);
-	printf("\t\t\t该职工的个人所得税是：%f",zggz[n].personaltax);
-	printf("\t\t\t该职工的实发工资是：%f",zggz[n].realsalary);
-	printf("\n\n\t\t\t按任意键返回。");
-	getch();
+	for(int i=0;i<=n;i++)
+	if(strcmp(zggz[n].workerID,zggz[i].workerID)==0)
+	{
+		printf("\t\t\t该工号已存在！");
+		printf("\n\n\t\t\t按任意键返回。");
+		getch();
+		return;
+	}
+	else 
+	{
+		printf("\t请输入工号：");
+ 	    fflush(stdin);                                  //请出键盘缓冲区
+		gets(zggz[n].workerID);
+		printf("\t\t\t请输入新职工姓名：");
+		gets(zggz[n].name);
+		printf("\n\t\t请输入该职工新的岗位工资：");
+		scanf("%f",&zggz[n].gsalary);
+		printf("\n\t\t请输入该职工新的薪级工资：");
+		scanf("%f",&zggz[n].xsalary);
+		printf("\n\t\t请输入该职工新的职务津贴：");
+		scanf("%f",&zggz[n].zsalary);
+		printf("\n\t\t请输入该职工新的绩效工资：");
+		scanf("%f",&zggz[n].jsalary);
+		zggz[n].sumsalary=zggz[n].gsalary+zggz[n].xsalary+zggz[n].zsalary+zggz[n].jsalary;
+		zggz[n].personaltax=grsds(zggz[n].sumsalary);                                         //计算个人所得税
+		zggz[n].realsalary=zggz[n].sumsalary-zggz[n].personaltax;
+		printf("\t\t\t该职工的应发工资是：%f",zggz[n].realsalary);
+		printf("\t\t\t该职工的个人所得税是：%f",zggz[n].personaltax);
+		printf("\t\t\t该职工的实发工资是：%f",zggz[n].realsalary);
+		printf("\n\n\t\t\t按任意键返回。");
+		getch();
+	}
 }
 void del()                          //删除职工工资数据函数
 {
