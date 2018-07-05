@@ -173,38 +173,40 @@ void modify()                                                        //ĞŞ¸ÄÖ°¹¤¹
 }
 void add()                                             //Ìí¼ÓÖ°¹¤¹¤×ÊÊı¾İº¯Êı
 {
-	printf("\tÇëÊäÈë¹¤ºÅ£º");
+	printf("\tÇëÊäÈëĞÂ¹¤ºÅ£º");
 	fflush(stdin);                                  //Çë³ö¼üÅÌ»º³åÇø
 	gets(zggz[++n].workerID);
-	for(int i=0;i<=n;i++)                                                       //ÔÚÖ°¹¤×ÜÊı·¶Î§ÄÚÑ­»·²éÕÒ
-	{
-		if(strcmp(zggz[n].workerID,zggz[i].workerID)!=0) 
-		{
-			printf("\t\t\tÇëÊäÈëĞÂÖ°¹¤ĞÕÃû£º");
-			gets(zggz[n].name);
-			printf("\n\t\tÇëÊäÈë¸ÃÖ°¹¤ĞÂµÄ¸ÚÎ»¹¤×Ê£º");
-			scanf("%f",&zggz[n].gsalary);
-			printf("\n\t\tÇëÊäÈë¸ÃÖ°¹¤ĞÂµÄĞ½¼¶¹¤×Ê£º");
-			scanf("%f",&zggz[n].xsalary);
-			printf("\n\t\tÇëÊäÈë¸ÃÖ°¹¤ĞÂµÄÖ°Îñ½òÌù£º");
-			scanf("%f",&zggz[n].zsalary);
-			printf("\n\t\tÇëÊäÈë¸ÃÖ°¹¤ĞÂµÄ¼¨Ğ§¹¤×Ê£º");
-			scanf("%f",&zggz[n].jsalary);
-			zggz[n].sumsalary=zggz[n].gsalary+zggz[n].xsalary+zggz[n].zsalary+zggz[n].jsalary;
-			zggz[n].personaltax=grsds(zggz[n].sumsalary);                                         //¼ÆËã¸öÈËËùµÃË°
-			zggz[n].realsalary=zggz[n].sumsalary-zggz[n].personaltax;
-			printf("\t\t\t¸ÃÖ°¹¤µÄÓ¦·¢¹¤×ÊÊÇ£º%f",zggz[n].realsalary);
-			printf("\t\t\t¸ÃÖ°¹¤µÄ¸öÈËËùµÃË°ÊÇ£º%f",zggz[n].personaltax);
-			printf("\t\t\t¸ÃÖ°¹¤µÄÊµ·¢¹¤×ÊÊÇ£º%f",zggz[n].realsalary);
-		}
-		else
-		{
-			printf("\t\t\t¸Ã¹¤ºÅÒÑ´æÔÚ£¡");
-		}
-			printf("\n\n\t\t\t°´ÈÎÒâ¼ü·µ»Ø¡£");
-			getch();
-			return;
+	for(int i=0;i<n;i++)
+	if(strcmp(zggz[n].workerID,zggz[i].workerID)==0)
+	{	
+		printf("\t\t\t¸Ã¹¤ºÅÒÑ´æÔÚ£¡");
+		break;
+		printf("\n\n\t\t\t°´ÈÎÒâ¼ü·µ»Ø¡£");
+		getch();
+		return;
+
 	}
+	printf("\tÇëÖØĞÂÊäÈëĞÂ¹¤ºÅ£º");
+	gets(zggz[n].workerID);
+	printf("\t\t\tÇëÊäÈëÖ°¹¤ĞÕÃû£º");
+	gets(zggz[n].name);
+	printf("\n\t\tÇëÊäÈë¸ÃÖ°¹¤µÄ¸ÚÎ»¹¤×Ê£º");
+	scanf("%f",&zggz[n].gsalary);
+	printf("\n\t\tÇëÊäÈë¸ÃÖ°¹¤µÄĞ½¼¶¹¤×Ê£º");
+	scanf("%f",&zggz[n].xsalary);
+	printf("\n\t\tÇëÊäÈë¸ÃÖ°¹¤µÄÖ°Îñ½òÌù£º");
+	scanf("%f",&zggz[n].zsalary);
+	printf("\n\t\tÇëÊäÈë¸ÃÖ°¹¤µÄ¼¨Ğ§¹¤×Ê£º");
+	scanf("%f",&zggz[n].jsalary);
+	zggz[n].sumsalary=zggz[n].gsalary+zggz[n].xsalary+zggz[n].zsalary+zggz[n].jsalary;
+	zggz[n].personaltax=grsds(zggz[n].sumsalary);                                         //¼ÆËã¸öÈËËùµÃË°
+	zggz[n].realsalary=zggz[n].sumsalary-zggz[n].personaltax;
+	printf("\t\t\t¸ÃÖ°¹¤µÄÓ¦·¢¹¤×ÊÊÇ£º%f",zggz[n].realsalary);
+	printf("\t\t\t¸ÃÖ°¹¤µÄ¸öÈËËùµÃË°ÊÇ£º%f",zggz[n].personaltax);
+	printf("\t\t\t¸ÃÖ°¹¤µÄÊµ·¢¹¤×ÊÊÇ£º%f",zggz[n].realsalary);
+	printf("\n\n\t\t\t°´ÈÎÒâ¼ü·µ»Ø¡£");
+	getch();
+	return;
 }
 void del()                          //É¾³ıÖ°¹¤¹¤×ÊÊı¾İº¯Êı
 {
